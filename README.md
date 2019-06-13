@@ -1,4 +1,4 @@
-# Privacy-and-Security-Focused-Browser
+# Privacy and Security Focused Browser
 
 Tor Browser without Tor[Tor Browser](https://www.torproject.org/projects/torbrowser) is a fork of the Mozilla Firefox web browser with patches that enhance both security and privacy. It routes all traffic through the [Tor network](https://en.wikipedia.org/wiki/Tor_%28anonymity_network%29) to conceal a users and usage from anyone conducting network surveillance or traffic analysis. Using Tor makes it very difficult to trace Internet activity to the user: this includes "visits to Web sites, online posts, instant messages, and other communication forms.<sup>[[1]](https://www.torproject.org/about/overview.html)</sup>
 
