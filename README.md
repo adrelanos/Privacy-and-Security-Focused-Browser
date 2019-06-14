@@ -166,7 +166,7 @@ This term has two meaning<sup>[[15]](https://www.whonix.org/wiki/FAQ)</sup>
 * Connecting to the regular Internet without the use of Tor or other anonymity networks; and/or
 * Connecting to regular servers which are not onion services, irrespective of whether Tor is used or not.
 
-**How does the --clearnet switch disable Tor?**
+**How does the `--clearnet` switch disable Tor?**
 
 Tor Browser supports custom user preferences `"user_pref"` which can be used to change browser configuration and behavior. In `tb-updater` the user preferences that disable Tor are located in /usr/share/tb-updater/tb_without_tor_settings.js. When the `--clearnet` switch is appended to /usr/bin/torbrowser, this file is copied over to the corresponding Tor Browser profile were the custom `user_pref(s)` are parsed.<sup>[[16]](https://github.com/Whonix/tb-starter/blob/28102df140f3f0f8a9b1bd5bc7dc19336420ccce/usr/bin/torbrowser#L354-L365)</sup> 
 
