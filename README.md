@@ -182,13 +182,7 @@ This is strongly recommended against because using the `--clearnet` switch will 
 
 **Does the `--clearnet` switch alter any other Tor Browser behavior?**
 
- No, the only cahnges are to the preference prevously shown. They include;
-
- * Disables private browsing mode by setting `browser.privatebrowsing.autostart` to false. 
-
- * Enables password storage by setting `signon.rememberSignons` to true
-
- * Enables persistent NoScript per-site settings by setting `extensions.torbutton.noscript_persist` to true
+ No, the only changes to Tor Browser are to the preferences previously shown. 
 
 **Can I add my own custom preferences to change Tor Browser behavior?**
 
