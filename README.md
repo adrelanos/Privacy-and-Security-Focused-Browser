@@ -19,7 +19,6 @@ But it is also possible (and easy!) to use Tor Browser without [Tor](https://www
 
 Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security and privacy focused clearnet browser (Tor Browser without Tor), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
 
-
 ## Install tb-updater
 
 The first step to install `tb-updater` is to download the Whonix signing key using APT package manager. However, as outlined in this [Qubes issue](https://github.com/QubesOS/qubes-issues/issues/4291) downloading GPG keys with APT will fail in TemplateVMs. To work around this issue the signing key can be downloaded in an AppVM and copied over to the Debian TemplateVM in a text file. Then `tb-updater` can be downloaded and verified in the TemplateVM.
@@ -99,22 +98,23 @@ To start Tor Browser without Tor, in dom0 terminal, run.
 
 Tor Browser will have a red background with a message stating _"Something Went Wrong!" Tor is not working in this browser._ Which is what you want when using the `--clearnet` switch. 
 
-
 ## Normalizing Tor Browser behaviour (Security vs. Usability trade-off)
 
 While Tor Browser has numerous security enhancements they can come at a cost of decreased usability. Since Tor Browser is highly configurable, security settings and behavior can be customized according to the requirements of the user.
 
+Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs created thereafter will inherit those changes. However, AppVMs created prior to the aforementioned edits will not benefit from any changes to the SecBrowser configuration file in the TemplateVM. 
+   
 **Security Slider**: Tor Browser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security and privacy. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing Tor Browser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
 
 **Private Browsing Mode**: In the default configuration Tor Browser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across Tor Browser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `--clearnet` switch is used. 
 
   When private browsing mode is disabled Tor Browser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
-
-  In Debian TemplateVM, open tb_without_tor_settings.js in a text editor with root rights.
-
-  `sudo gedit /usr/share/tb-updater/tb_without_tor_settings.js`
-
-  Next, comment out "//" `user_pref("browser.privatebrowsing.autostart", false);`.
+   
+   In the AppVM open the `user.js` configuration file in an editor.
+   
+   `gedit ~/.tb/Browser/TorBrowser/Data/Browser/profile.default/user.js`
+   
+   Next, comment out "//" `user_pref("browser.privatebrowsing.autostart", false);`.
 
   When completed, the corresponding line should look like the following text block. 
   ```
@@ -122,16 +122,16 @@ While Tor Browser has numerous security enhancements they can come at a cost of 
   user_pref("extensions.torbutton.noscript_persist", true);
   //user_pref("browser.privatebrowsing.autostart", false);
   ```
-
-  If you prefer to keep private browsing mode disabled, it may be advantageous to install one or more anti-tracking browser extensions. The extensions [Disconnect](https://addons.mozilla.org/en-US/firefox/addon/disconnect/), [Privacy Badger](https://www.eff.org/privacybadger/faq#How-is-Privacy-Badger-different-from-Disconnect,-Adblock-Plus,-Ghostery,-and-other-blocking-extensions) and [uBlock Origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) are all open-source and are generally recommended. Research which one(s) may be most suitable in the circumstances; their use cases are different.
+   
+ If you prefer to keep private browsing mode disabled, it may be advantageous to install one or more anti-tracking browser extensions. The extensions [Disconnect](https://addons.mozilla.org/en-US/firefox/addon/disconnect/), [Privacy Badger](https://www.eff.org/privacybadger/faq#How-is-Privacy-Badger-different-from-Disconnect,-Adblock-Plus,-Ghostery,-and-other-blocking-extensions) and [uBlock Origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) are all open-source and are generally recommended. Research which one(s) may be most suitable in the circumstances; their use cases are different.
 
 **Persistent NoScript Settings**: `tb-updater` includes a `user_pref` that allows custom NoScript settings to persist across browser sessions. This is also a security vs usability trade-off.<sup>[[17]](https://www.whonix.org/wiki/Tor_Browser#NoScript_Custom_Setting_Persistence)</sup> Keep in mind that all NoScript preference will be overridden and all custom per-site settings lost, if the Tor Browser "Security Slider" setting is changed afterwards. This holds true regardless if the security setting was increased or decreased.
 
   If you prefer to disable persistent NoScript setting this can easily be done by commenting out the corresponding `user_pref`.
 
-  In Debian TemplateVM, open tb_without_tor_settings.js in an editor with root rights.
+  In the AppVM, open the `user,js` configuration file in an editor.
 
-  `sudo gedit /usr/share/tb-updater/tb_without_tor_settings.js`
+  `gedit ~/.tb//Browser/TorBrowser/Data/Browser/profile.default/user.js`
 
   Next, comment out "//" `user_pref("extensions.torbutton.noscript_persist", true);`
 
@@ -143,11 +143,11 @@ While Tor Browser has numerous security enhancements they can come at a cost of 
   ```
 **Remember logins and passwords for sites**: By default Tor Browser does not save site login information such as user names or password. To increase usability, `signon.rememberSignons` is set to true in which allows this information to be saved across browser sessions. 
   
-  If you prefer to disable this feature open tb_without_tor_settings.js in an editor and comment out the corresponding `user_pref`. 
+  If you prefer to disable this feature open `user.js` in an editor and comment out the corresponding `user_pref`. 
   
-  In Debian TemplateVM, open tb_without_tor_settings.js in an editor with root rights.
+  In the AppVM, open the `user.js` configuration file in an editor.
 
-  `sudo gedit /usr/share/tb-updater/tb_without_tor_settings.js`
+  `gedit ~/.tb//Browser/TorBrowser/Data/Browser/profile.default/user.js`
   
   Next, comment out "//" `user_pref("signon.rememberSignons", true);`
  
