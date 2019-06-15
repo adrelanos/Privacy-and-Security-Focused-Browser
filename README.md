@@ -1,14 +1,13 @@
 # Privacy and Security Focused Browser
 
-Tor Browser without Tor[Tor Browser](https://www.torproject.org/projects/torbrowser) is a fork of the Mozilla Firefox web browser with patches that enhance both security and privacy. It routes all traffic through the [Tor network](https://en.wikipedia.org/wiki/Tor_%28anonymity_network%29) to conceal a users and usage from anyone conducting network surveillance or traffic analysis. Using Tor makes it very difficult to trace Internet activity to the user: this includes "visits to Web sites, online posts, instant messages, and other communication forms.<sup>[[1]](https://www.torproject.org/about/overview.html)</sup>
+Tor Browser without Tor[Tor Browser](https://www.torproject.org/projects/torbrowser) is a fork of the Mozilla Firefox web browser with patches that enhance both security and privacy. It routes all traffic through the [Tor network](https://en.wikipedia.org/wiki/Tor_%28anonymity_network%29) to conceal online usage from anyone conducting network surveillance or traffic analysis. Using Tor makes it very difficult to trace Internet activity to the user: this includes "visits to Web sites, online posts, instant messages, and other communication forms".<sup>[[1]](https://www.torproject.org/about/overview.html)</sup>
 
 But it is also possible (and easy!) to use Tor Browser without [Tor](https://www.whonix.org/wiki/Tor) and take advantage of its excellent enhancements for reducing linkability, which is, "the ability for a user's activity on one site to be linked with their activity on another site without their knowledge or explicit consent."<sup>[[2]](https://www.torproject.org/projects/torbrowser/design/#privacy)</sup> Even without routing traffic over the Tor network, Tor Browser offers better protection from [online tracking](https://www.whonix.org/wiki/Data_Collection_Techniques) than Firefox, Google Chrome/Chromium or Microsoft Edge, especially against [fingerprinting](http://www.whonix.org/wiki/Data_Collection_Techniques#Fingerprinting_of_Browser_.28HTTP.29_Header), without any customization necessary.<sup>[[3]](https://2019.www.torproject.org/projects/torbrowser/design/)</sup>
 
 ## Security Enhancements:
 
-* **Selfrando**: Randomizes Tor browser code to ensure that an attacker doesn't know where the code is on your computer. This makes it much harder for someone to construct a reliable attack.<sup>[[4]](https://blog.torproject.org/selfrando-q-and-georg-koppen)</sup><sup>[[5]](https://people.torproject.org/~gk/misc/Selfrando-Tor-Browser.pdf)</sup>
 * **WebRTC disabled by default**: WebRTC can compromise the security of VPN tunnels, by exposing the external (real) IP address of a user.<sup>[[6]](https://en.wikipedia.org/wiki/WebRTC#Concerns)</sup><sup>[[7]](https://torrentfreak.com/huge-security-flaw-leaks-vpn-users-real-ip-addresses-150130/)</sup>
-* **Security Slider**: Lets you increase your security by disabling certain web features that could be used to attack you security.<sup>[[8]](https://tb-manual.torproject.org/security-slider/)</sup>
+* **Security Slider**: Lets you increase your security by disabling certain web features that could be used to attack your security.<sup>[[8]](https://tb-manual.torproject.org/security-slider/)</sup>
 * **NoScript installed by default**: NoScript can provide significant protection with the correct configuration.<sup>[[9]](https://en.wikipedia.org/wiki/NoScript)</sup> NoScripts blocks active (executable) web content and protects against [cross-site scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) (XSS). "The add-on also offers specific countermeasures against security exploits".
 * **HTTPS Everywhere installed by default**: HTTPS Everywhere is a browser extension that encrypts your communications with many major websites, making your browsing more secure.<sup>[[10]](https://www.eff.org/https-everywhere)</sup>
 * **Reproducible builds**: Tor Browser build security is achieved through a reproducible build process that enables anyone to produce byte-for-byte identical binaries to the ones Tor Project releases.<sup>[[11]](https://2019.www.torproject.org/projects/torbrowser/design/#BuildSecurity)</sup><sup>[[12]](https://blog.torproject.org/deterministic-builds-part-two-technical-details)</sup>
@@ -23,60 +22,60 @@ Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-upd
 
 ## Install tb-updater
 
-The first step to install `tb-updater` is to download the Whonix signing key using APT package manager. However, as outlined in this [Qubes issue](https://github.com/QubesOS/qubes-issues/issues/4291) downloading GPG keys with APT will fail in TemplateVMs. To work around this issue the signing key can be downloaded in an AppVM and copied over to the Debian TemplateVM in a text file. Then `tb-updater` can be downloaded and verify in the TemplateVM.
+The first step to install `tb-updater` is to download the Whonix signing key using APT package manager. However, as outlined in this [Qubes issue](https://github.com/QubesOS/qubes-issues/issues/4291) downloading GPG keys with APT will fail in TemplateVMs. To work around this issue the signing key can be downloaded in an AppVM and copied over to the Debian TemplateVM in a text file. Then `tb-updater` can be downloaded and verified in the TemplateVM.
 
-1. Download the Whonix signing key
+1. Download the Whonix signing key.
 
-   In the AppVM, run
+   In the AppVM, run.
 
        sudo apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://ipv4.pool.sks-keyservers.net:80 --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
 
-2. Display the keys fingerprint
+2. Display the key's fingerprint.
 
-   In the AppVM, run
+   In the AppVM, run.
                   
        sudo apt-key adv --fingerprint 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
 
-3. Compare the fingerprint displayed in the terminal to the one listed at the following link; https://www.whonix.org/wiki/Patrick_Schleizer
+3. Compare the fingerprint displayed in the terminal to the one listed at the following link; https://www.whonix.org/wiki/Patrick_Schleizer.
 
-4. Copy the Whonix signing key to a new text file named `whonix.key`
+4. Copy the Whonix signing key to a new text file named `whonix.key`.
 
     In the AppVM, run.
 
        sudo apt-key export 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA > /tmp/whonix.key
 
-    If the following error is encountered it can safely be ignored
+    If the following error is encountered it can safely be ignored.
 
     >Warning: apt-key output should not be parsed (stdout is not a terminal)
     gpg: WARNING: nothing exported
 
-5. Copy the `whonix.key` text file to the Debian TemplateVM
+5. Copy the `whonix.key` text file to the Debian TemplateVM.
 
        qvm-copy /tmp/whonix.key <templatevm_name>
 
-     If the following error appears, it can be safely ignored (hit "OK" when prompted)
+     If the following error appears, it can be safely ignored (hit "OK" when prompted).
 
      >qfile-agent: Fatal error: stat TemplateVM (error type: No such file or directory)
 
-6. In the Debian TemplateVM import the Whonix signing key
+6. In the Debian TemplateVM import the Whonix signing key.
 
-   cd to the Qubes Incoming directory
+   cd to the Qubes Incoming directory.
 
        cd ~/QubesIncoming/appvm_name
 
-   Next, import the Whonix signing key
+   Next, import the Whonix signing key.
 
        gpg --import whonix.key
 
-7. In the Debian TemplateVM add the Whonix APT repository to the sources.list
+7. In the Debian TemplateVM add the Whonix APT repository to the sources.list.
 
-       echo "deb http://deb.whonix.org buster main contrib non-free" | sudo tee /etc/apt/sources.list.d/whonix.list
+       echo "deb https://deb.whonix.org buster main contrib non-free" | sudo tee /etc/apt/sources.list.d/whonix.list
 
-8. In the Debian TemplateVM update the packages lists
+8. In the Debian TemplateVM update the packages lists.
 
        sudo apt-get update
 
-9. Finally, install `tb-updater`
+9. Finally, install `tb-updater`.
 
        sudo apt-get install tb-updater
 
@@ -84,7 +83,7 @@ The first step to install `tb-updater` is to download the Whonix signing key usi
 
 Tor Browser can be installed simply by running `tb-updater` in the Debian TemplateVM. Since running applications in a TemplateVM is strongly recommended against, the process will exit after Tor Browser is extracted and installed.
 
-In the Debian TemplateVM, run
+In the Debian TemplateVM, run.
 
     update-torbrowser
 
@@ -94,7 +93,7 @@ Any newly created AppVM based on the above TemplateVM will inherit the Tor Brows
 
 **Note:** Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
 
-To start Tor Browser without Tor, in dom0 terminal, run
+To start Tor Browser without Tor, in dom0 terminal, run.
 
     qvm-run <appvm_name> "torbrowser --clearnet"
 
@@ -115,7 +114,7 @@ While Tor Browser has numerous security enhancements they can come at a cost of 
 
   `sudo gedit /usr/share/tb-updater/tb_without_tor_settings.js`
 
-  Next, comment out "//" `user_pref("browser.privatebrowsing.autostart", false);`
+  Next, comment out "//" `user_pref("browser.privatebrowsing.autostart", false);`.
 
   When completed, the corresponding line should look like the following text block. 
   ```
@@ -144,7 +143,11 @@ While Tor Browser has numerous security enhancements they can come at a cost of 
   ```
 **Remember logins and passwords for sites**: By default Tor Browser does not save site login information such as user names or password. To increase usability, `signon.rememberSignons` is set to true in which allows this information to be saved across browser sessions. 
   
-  If you prefer to disable this feature open tb_without_tor_settings.js in an editor as previously shown. 
+  If you prefer to disable this feature open tb_without_tor_settings.js in an editor and comment out the corresponding `user_pref`. 
+  
+  In Debian TemplateVM, open tb_without_tor_settings.js in an editor with root rights.
+
+  `sudo gedit /usr/share/tb-updater/tb_without_tor_settings.js`
   
   Next, comment out "//" `user_pref("signon.rememberSignons", true);`
  
@@ -153,9 +156,9 @@ While Tor Browser has numerous security enhancements they can come at a cost of 
   // Save passwords.
   //user_pref("signon.rememberSignons", true);
   ```
-## FAQs
+## FAQ
 
-**Whonix developers focus their efforts on an advanced anonymity with Tor being a core component. Why develop a package that disables Tor?**
+**Whonix developers focus their efforts on advanced anonymity with Tor being a core component. Why develop a package that disables Tor?**
 
 Package `tb-upater` was developed with design goals focused on securely downloading and verifying Tor Browser. However, requirements for a new operating system under development -- a security focused OS [based on Hardened Debian](https://forums.whonix.org/t/hardened-debian-security-focused-linux-distribution-based-on-debian-in-development-feedback-wanted/5943) -- called for a security hardened clearnet browser. Tor Browser without Tor met those requirements. Hence, the patch that disables Tor was integrated into tb-updater.
 
@@ -176,7 +179,7 @@ user_pref("extensions.torbutton.startup", false);
 user_pref("extensions.torlauncher.start_tor", false);
 user_pref("network.proxy.socks_remote_dns", false);
 ```
-**Can is use the `--clearnet` switch in a torified VM?**
+**Can I use the `--clearnet` switch in a torified VM?**
 
 This is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation.
 
@@ -186,7 +189,7 @@ This is strongly recommended against because using the `--clearnet` switch will 
 
 **Can I add my own custom preferences to change Tor Browser behavior?**
 
- Yes, but this could degrade security and privacy. See; Normalizing Tor Browser behavior.
+ Yes, but this could degrade security and privacy. see: Normalizing Tor Browser behavior.
 
 **I have an idea to improve Tor Browser without Tor's security in Qubes. Can is submit patch?**
 
