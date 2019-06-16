@@ -17,7 +17,7 @@ But it is also possible (and easy!) to use Tor Browser without [Tor](https://www
 
 **Note: Debian platforms only!**
 
-Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security and privacy focused clearnet browser (Tor Browser without Tor), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
+Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security focused clearnet browser (Tor Browser without Tor), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
 
 ## Install tb-updater
 
@@ -53,10 +53,10 @@ The first step to install `tb-updater` is to download the Whonix signing key usi
        qvm-copy /tmp/whonix.key <templatevm_name>
 
      If the following error appears, it can be safely ignored (hit "OK" when prompted).
-
+     
      >qfile-agent: Fatal error: stat TemplateVM (error type: No such file or directory)
-
-6. In the Debian TemplateVM import the Whonix signing key.
+     
+6. In the Debian TemplateVM, import the Whonix signing key.
 
    cd to the Qubes Incoming directory.
 
@@ -66,17 +66,17 @@ The first step to install `tb-updater` is to download the Whonix signing key usi
 
        gpg --import whonix.key
 
-7. In the Debian TemplateVM add the Whonix APT repository to the sources.list.
+7. In the Debian TemplateVM, add the Whonix APT repository to the sources.list.
 
        echo "deb https://deb.whonix.org buster main contrib non-free" | sudo tee /etc/apt/sources.list.d/whonix.list
 
-8. In the Debian TemplateVM update the packages lists.
+8. In the Debian TemplateVM, update the packages lists.
 
        sudo apt-get update
 
-9. Finally, install `tb-updater`.
+9. Install both `tb-updater` and `tb-starter`. (tb-updater `Recommends:` package `tb-starter`)
 
-       sudo apt-get install tb-updater
+       sudo apt-get install tb-updater tb-starter
 
 ## Install Tor Browser
 
@@ -100,17 +100,17 @@ Tor Browser will have a red background with a message stating _"Something Went W
 
 ## Normalizing Tor Browser behaviour (Security vs. Usability trade-off)
 
-While Tor Browser has numerous security enhancements they can come at a cost of decreased usability. Since Tor Browser is highly configurable, security settings and behavior can be customized according to the requirements of the user.
+While Tor Browser has numerous security enhancements they can come at a cost of decreased usability. Since it is also highly configurable, security settings and behavior can be customized according to the requirements of the user.
 
-Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs created thereafter will inherit those changes. However, AppVMs created prior to the aforementioned edits will not benefit from any changes to the SecBrowser configuration file in the TemplateVM. 
+Note: If users edit the TemplateVM to modify Tor Browser behavior, all AppVMs created thereafter will inherit those changes. However, AppVMs created prior to the aforementioned edits will not benefit from any changes to the Tor Browser configuration file in the TemplateVM. 
    
-**Security Slider**: Tor Browser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security and privacy. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing Tor Browser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
+**Security Slider**: Tor Browser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing Tor Browser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
 
 **Private Browsing Mode**: In the default configuration Tor Browser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across Tor Browser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `--clearnet` switch is used. 
 
   When private browsing mode is disabled Tor Browser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
    
-   In the AppVM open the `user.js` configuration file in an editor.
+   In the AppVM, open the `user.js` configuration file in an editor.
    
    `gedit ~/.tb/Browser/TorBrowser/Data/Browser/profile.default/user.js`
    
@@ -131,7 +131,7 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
 
   In the AppVM, open the `user,js` configuration file in an editor.
 
-  `gedit ~/.tb//Browser/TorBrowser/Data/Browser/profile.default/user.js`
+  `gedit ~/.tb/Browser/TorBrowser/Data/Browser/profile.default/user.js`
 
   Next, comment out "//" `user_pref("extensions.torbutton.noscript_persist", true);`
 
@@ -147,7 +147,7 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
   
   In the AppVM, open the `user.js` configuration file in an editor.
 
-  `gedit ~/.tb//Browser/TorBrowser/Data/Browser/profile.default/user.js`
+  `gedit ~/.tb/Browser/TorBrowser/Data/Browser/profile.default/user.js`
   
   Next, comment out "//" `user_pref("signon.rememberSignons", true);`
  
@@ -160,7 +160,7 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
 
 **Whonix developers focus their efforts on advanced anonymity with Tor being a core component. Why develop a package that disables Tor?**
 
-Package `tb-upater` was developed with design goals focused on securely downloading and verifying Tor Browser. However, requirements for a new operating system under development -- a security focused OS [based on Hardened Debian](https://forums.whonix.org/t/hardened-debian-security-focused-linux-distribution-based-on-debian-in-development-feedback-wanted/5943) -- called for a security hardened clearnet browser. Tor Browser without Tor met those requirements. Hence, the patch that disables Tor was integrated into tb-updater.
+Package `tb-upater` was developed with design goals focused on securely downloading and verifying Tor Browser. However, requirements for a new operating system under development -- a security focused OS [based on Hardened Debian](https://forums.whonix.org/t/hardened-debian-security-focused-linux-distribution-based-on-debian-in-development-feedback-wanted/5943) -- called for a security hardened clearnet browser. Tor Browser without Tor met those requirements. Hence, the patch that disables Tor was integrated into `tb-updater`.
 
 **What is Clearnet?**
 
@@ -187,7 +187,7 @@ This is strongly recommended against because using the `--clearnet` switch will 
 
  No, the only changes to Tor Browser are to the preferences previously shown. 
 
-**Can I add my own custom preferences to change Tor Browser behavior?**
+**Can I add my own custom preferences to change Tor Browser without Tor behavior?**
 
  Yes, but this could degrade security and privacy. see: Normalizing Tor Browser behavior.
 
