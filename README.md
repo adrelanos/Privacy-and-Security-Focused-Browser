@@ -1,8 +1,9 @@
 # Privacy and Security Focused Browser
 
-Tor Browser without Tor is a fork of the Mozilla Firefox web browser with patches that enhance both security and privacy. It routes all traffic through the [Tor network](https://en.wikipedia.org/wiki/Tor_%28anonymity_network%29) to conceal online usage from anyone conducting network surveillance or traffic analysis. Using Tor makes it very difficult to trace Internet activity to the user: this includes "visits to Web sites, online posts, instant messages, and other communication forms".<sup>[[1]](https://www.torproject.org/about/overview.html)</sup>
 
-But it is also possible (and easy!) to use Tor Browser without [Tor](https://www.whonix.org/wiki/Tor) and take advantage of its excellent enhancements for reducing linkability, which is, "the ability for a user's activity on one site to be linked with their activity on another site without their knowledge or explicit consent."<sup>[[2]](https://www.torproject.org/projects/torbrowser/design/#privacy)</sup> Even without routing traffic over the Tor network, Tor Browser offers better protection from [online tracking](https://www.whonix.org/wiki/Data_Collection_Techniques) than Firefox, Google Chrome/Chromium or Microsoft Edge, especially against [fingerprinting](http://www.whonix.org/wiki/Data_Collection_Techniques#Fingerprinting_of_Browser_.28HTTP.29_Header), without any customization necessary.<sup>[[3]](https://2019.www.torproject.org/projects/torbrowser/design/)</sup>
+SecBrowser is a security focused browser that provides protection from active web content, [online tracking](https://www.whonix.org/wiki/Data_Collection_Techniques) and reduces users linkability across websites. Enhanced usability is achieved with a built-in security slider that can be used to easily disable dangerous web site features such as JavaScript. Since many of the features that are commonly exploited in browsers are disabled by default, SecBrowser's attack surface is greatly reduced.  In the default configuration, SecBrowser offers better protection from online tracking than Firefox, Google Chrome or Microsoft Edge, especially against [fingerprinting](http://www.whonix.org/wiki/Data_Collection_Techniques#Fingerprinting_of_Browser_.28HTTP.29_Header), without any customizations necessary.<sup>[[3]](https://2019.www.torproject.org/projects/torbrowser/design/)</sup>
+
+SecBrowser is based on Tor Browser without [Tor](https://www.whonix.org/wiki/Tor). This means unlike Tor Browser, SecBrowser does _not_ route traffic over the Tor network, which in common parlance is referred to as "clearnet" traffic. Even without the aid of the Tor network, SecBrowser still benefits from the numerous [patches](https://gitweb.torproject.org/tor-browser.git) that Tor developers merged into the code base. Even with developer skills, these enhancements would be arduous and time consuming to duplicate in other browsers, with the outcome unlikely to match SecBrowser's many security benefits. While users can install browser extensions to mitigate specific attack vectors. Its unlikely to compare to SecBrowser which leverages the experience and know how of the Tor Project devs and the battle tested Tor Browser. 
 
 ## Security Enhancements:
 
@@ -13,11 +14,11 @@ But it is also possible (and easy!) to use Tor Browser without [Tor](https://www
 * **Reproducible builds**: Tor Browser build security is achieved through a reproducible build process that enables anyone to produce byte-for-byte identical binaries to the ones Tor Project releases.<sup>[[11]](https://2019.www.torproject.org/projects/torbrowser/design/#BuildSecurity)</sup><sup>[[12]](https://blog.torproject.org/deterministic-builds-part-two-technical-details)</sup>
 * **DNS and proxy configuration obedience**: Proxy obedience is achieved through custom patches, Firefox proxy settings, and build flags. Plugins which can bypass proxy setting are disabled.<sup>[[13]](https://2019.www.torproject.org/projects/torbrowser/design/#proxy-obedience)</sup>
 
-## Install and Configure Tor Browser without Tor.
+## Install and Configure SecBrowser.
 
 **Note: Debian platforms only!**
 
-Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security focused clearnet browser (Tor Browser without Tor), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
+Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security focused clearnet browser (SecBrowser), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
 
 ## Install tb-updater
 
@@ -86,29 +87,29 @@ In the Debian TemplateVM, run.
 
     update-torbrowser
 
-## Starting Tor Browser
+## Starting SecBrowser
 
 Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To disable Tor users need only run Tor Browser with the `--clearnet` switch.
 
 **Note:** Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
 
-To start Tor Browser without Tor, in dom0 terminal, run.
+To start SecBrowser, in dom0 terminal, run.
 
     qvm-run <appvm_name> "torbrowser --clearnet"
 
-Tor Browser will have a red background with a message stating _"Something Went Wrong!" Tor is not working in this browser._ Which is what you want when using the `--clearnet` switch. 
+SecBrowser will have a red background with a message stating _"Something Went Wrong!" Tor is not working in this browser._ Which is what you want when using the `--clearnet` switch. 
 
-## Normalizing Tor Browser behaviour (Security vs. Usability trade-off)
+## Normalizing SecBrowser behaviour (Security vs. Usability trade-off)
 
-While Tor Browser has numerous security enhancements they can come at a cost of decreased usability. Since it is also highly configurable, security settings and behavior can be customized according to the requirements of the user.
+While SecBrowser has numerous security enhancements they can come at a cost of decreased usability. Since it is also highly configurable, security settings and behavior can be customized according to the requirements of the user.
 
-Note: If users edit the TemplateVM to modify Tor Browser behavior, all AppVMs created thereafter will inherit those changes. However, AppVMs created prior to the aforementioned edits will not benefit from any changes to the Tor Browser configuration file in the TemplateVM. 
+Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs created thereafter will inherit those changes. However, AppVMs created prior to the aforementioned edits will not benefit from any changes to the SecBrowser configuration file in the TemplateVM. 
    
-**Security Slider**: Tor Browser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing Tor Browser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
+**Security Slider**: SecBrowser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing SecBrowser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
 
-**Private Browsing Mode**: In the default configuration Tor Browser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across Tor Browser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `--clearnet` switch is used. 
+**Private Browsing Mode**: In the default configuration SecBrowser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across SecBrowser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `--clearnet` switch is used. 
 
-  When private browsing mode is disabled Tor Browser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
+  When private browsing mode is disabled SecBrowser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
    
    In the AppVM, open the `user.js` configuration file in an editor.
    
@@ -125,7 +126,7 @@ Note: If users edit the TemplateVM to modify Tor Browser behavior, all AppVMs cr
    
  If you prefer to keep private browsing mode disabled, it may be advantageous to install one or more anti-tracking browser extensions. The extensions [Disconnect](https://addons.mozilla.org/en-US/firefox/addon/disconnect/), [Privacy Badger](https://www.eff.org/privacybadger/faq#How-is-Privacy-Badger-different-from-Disconnect,-Adblock-Plus,-Ghostery,-and-other-blocking-extensions) and [uBlock Origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) are all open-source and are generally recommended. Research which one(s) may be most suitable in the circumstances; their use cases are different.
 
-**Persistent NoScript Settings**: `tb-updater` includes a `user_pref` that allows custom NoScript settings to persist across browser sessions. This is also a security vs usability trade-off.<sup>[[17]](https://www.whonix.org/wiki/Tor_Browser#NoScript_Custom_Setting_Persistence)</sup> Keep in mind that all NoScript preference will be overridden and all custom per-site settings lost, if the Tor Browser "Security Slider" setting is changed afterwards. This holds true regardless if the security setting was increased or decreased.
+**Persistent NoScript Settings**: `tb-updater` includes a `user_pref` that allows custom NoScript settings to persist across browser sessions. This is also a security vs usability trade-off.<sup>[[17]](https://www.whonix.org/wiki/Tor_Browser#NoScript_Custom_Setting_Persistence)</sup> Keep in mind that all NoScript preference will be overridden and all custom per-site settings lost, if the SecBrowser "Security Slider" setting is changed afterwards. This holds true regardless if the security setting was increased or decreased.
 
   If you prefer to disable persistent NoScript setting this can easily be done by commenting out the corresponding `user_pref`.
 
@@ -141,7 +142,7 @@ Note: If users edit the TemplateVM to modify Tor Browser behavior, all AppVMs cr
   //user_pref("extensions.torbutton.noscript_persist", true);
   user_pref("browser.privatebrowsing.autostart", false);
   ```
-**Remember logins and passwords for sites**: By default Tor Browser does not save site login information such as user names or password. To increase usability, `signon.rememberSignons` is set to true in which allows this information to be saved across browser sessions. 
+**Remember logins and passwords for sites**: By default SecBrowser does not save site login information such as user names or password. To increase usability, `signon.rememberSignons` is set to true in which allows this information to be saved across browser sessions. 
   
   If you prefer to disable this feature open `user.js` in an editor and comment out the corresponding `user_pref`. 
   
@@ -160,7 +161,7 @@ Note: If users edit the TemplateVM to modify Tor Browser behavior, all AppVMs cr
 
 **Whonix developers focus their efforts on advanced anonymity with Tor being a core component. Why develop a package that disables Tor?**
 
-Package `tb-upater` was developed with design goals focused on securely downloading and verifying Tor Browser. However, requirements for a new operating system under development -- a security focused OS [based on Hardened Debian](https://forums.whonix.org/t/hardened-debian-security-focused-linux-distribution-based-on-debian-in-development-feedback-wanted/5943) -- called for a security hardened clearnet browser. Tor Browser without Tor met those requirements. Hence, the patch that disables Tor was integrated into `tb-updater`.
+Package `tb-upater` was developed with design goals focused on securely downloading and verifying Tor Browser. However, requirements for a new operating system under development -- a security focused OS [based on Hardened Debian](https://forums.whonix.org/t/hardened-debian-security-focused-linux-distribution-based-on-debian-in-development-feedback-wanted/5943) -- called for a security hardened clearnet browser. Tor Browser without Tor (SecBrowser) met those requirements. Hence, the patch that disables Tor was integrated into `tb-updater`.
 
 **What is Clearnet?**
 
@@ -183,15 +184,15 @@ user_pref("network.proxy.socks_remote_dns", false);
 
 This is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation.
 
-**Does the `--clearnet` switch alter any other Tor Browser behavior?**
+**Does the `--clearnet` switch alter any other SecBrowser behavior?**
 
- No, the only changes to Tor Browser are to the preferences previously shown. 
+ No, the only changes to SecBrowser are to the preferences previously shown. 
 
-**Can I add my own custom preferences to change Tor Browser without Tor behavior?**
+**Can I add my own custom preferences to change SecBrowser behavior?**
 
- Yes, but this could degrade security and privacy. see: Normalizing Tor Browser behavior.
+ Yes, but this could degrade security and privacy. see: Normalizing SecBrowser behavior.
 
-**I have an idea to improve Tor Browser without Tor's security in Qubes. Can is submit patch?**
+**I have an idea to improve SecBrowser's security in Qubes. Can is submit patch?**
 
 _Most definitely!_ Patches are always welcome!
 
