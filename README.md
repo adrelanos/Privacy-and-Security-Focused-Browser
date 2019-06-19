@@ -142,7 +142,7 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
   //user_pref("extensions.torbutton.noscript_persist", true);
   user_pref("browser.privatebrowsing.autostart", false);
   ```
-**Remember logins and passwords for sites**: By default SecBrowser does not save site login information such as user names or password. To increase usability, `signon.rememberSignons` is set to true in which allows this information to be saved across browser sessions. 
+**Remember logins and passwords for sites**: To increase usability, by default SecBrowser does save site login information such as user names or password. To implement this, `signon.rememberSignons` is set to `true` in which allows this information to be saved across browser sessions. 
   
   If you prefer to disable this feature open `user.js` in an editor and comment out the corresponding `user_pref`. 
   
@@ -180,20 +180,22 @@ user_pref("extensions.torbutton.startup", false);
 user_pref("extensions.torlauncher.start_tor", false);
 user_pref("network.proxy.socks_remote_dns", false);
 ```
-**Can I use the `--clearnet` switch in a torified VM?**
+**Can I use the `--clearnet` switch in a Whonix-Workstation VM (`anon-whonix`)?**
 
-This is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation.
+VMs behind a `sys-whonix` are always routed through Tor, traffic would still be torified. However, this is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation.
+
+**Can I use the `--clearnet` switch in a VM torified by something other than Whonix to avoid Tor over Tor?**
+
+This is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation. A [complete implementation](https://www.whonix.org/wiki/Dev/anon-ws-disable-stacked-tor) compatible with Tor Browser's per tab stream isolation would be much better.
 
 **Does the `--clearnet` switch alter any other SecBrowser behavior?**
 
- No, the only changes to SecBrowser are to the preferences previously shown. 
+No, the only changes to SecBrowser are to the preferences previously shown. 
 
 **Can I add my own custom preferences to change SecBrowser behavior?**
 
- Yes, but this could degrade security and privacy. see: Normalizing SecBrowser behavior.
+Yes, but this could degrade security and privacy. see: Normalizing SecBrowser behavior.
 
 **I have an idea to improve SecBrowser's security in Qubes. Can is submit patch?**
 
 _Most definitely!_ Patches are always welcome!
-
-
