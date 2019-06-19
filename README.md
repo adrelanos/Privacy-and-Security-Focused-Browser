@@ -1,7 +1,7 @@
-# Privacy and Security Focused Browser
+# SecBrowser
 
 
-SecBrowser is a security focused browser that provides better protection from exploits, thereby reducing the risk of a virus infection. Enhanced usability is achieved with a built-in security slider that can be used to easily disable attack surface increasing web site features such as JavaScript. Since many of the features that are commonly exploited in browsers are disabled by default, SecBrowser's attack surface is greatly reduced. In the default configuration, SecBrowser offers better security than Firefox, Google Chrome or Microsoft Edge without any customizations necessary.<sup>[[3]](https://2019.www.torproject.org/projects/torbrowser/design/)</sup> It also has better protections from [online tracking](https://www.whonix.org/wiki/Data_Collection_Techniques), [fingerprinting](http://www.whonix.org/wiki/Data_Collection_Techniques#Fingerprinting_of_Browser_.28HTTP.29_Header) and reduces users linkability across websites.
+SecBrowser is a security focused browser that provides better protection from exploits, thereby reducing the risk of a virus infection. Enhanced usability is achieved with a built-in security slider that can be used to easily disable web site features that increase attack surface such as JavaScript. Since many of the features that are commonly exploited in browsers are disabled by default, SecBrowser's attack surface is greatly reduced. In the default configuration, SecBrowser offers better security than Firefox, Google Chrome or Microsoft Edge without any customizations necessary.<sup>[[3]](https://2019.www.torproject.org/projects/torbrowser/design/)</sup> It also has better protections from [online tracking](https://www.whonix.org/wiki/Data_Collection_Techniques), [fingerprinting](http://www.whonix.org/wiki/Data_Collection_Techniques#Fingerprinting_of_Browser_.28HTTP.29_Header) and reduces users linkability across websites.
 
 SecBrowser is based on Tor Browser without [Tor](https://www.whonix.org/wiki/Tor). This means unlike Tor Browser, SecBrowser does _not_ route traffic over the Tor network, which in common parlance is referred to as "clearnet" traffic. Even without the aid of the Tor network, SecBrowser still benefits from the numerous [patches](https://gitweb.torproject.org/tor-browser.git) that Tor developers merged into the code base. Even with developer skills, these enhancements would be arduous and time consuming to duplicate in other browsers, with the outcome unlikely to match SecBrowser's many security benefits. While users can install browser extensions to mitigate specific attack vectors. Its unlikely to compare to SecBrowser which leverages the experience and know how of the Tor Project devs and the battle tested Tor Browser. 
 
@@ -18,7 +18,7 @@ SecBrowser is based on Tor Browser without [Tor](https://www.whonix.org/wiki/Tor
 
 **Note: Debian platforms only!**
 
-Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security focused clearnet browser (SecBrowser), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only append the `--clearnet` switch when starting Tor Browser.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
+Tor Browser can be installed using [tb-updater](https://github.com/Whonix/tb-updater) which is a package developed and maintained by Whonix developers. When run, `tb-updater` seamlessly automates the download and verification of Tor Browser (from The Tor Project's website). Moreover, for users that have a requirement for a security focused clearnet browser (SecBrowser), `tb-updater` comes with the functionality to disable Tor prebaked into the source. To disable Tor, users need only configure the `tb_clearnet=true` option in the initial set up.<sup>[[14]](https://forums.whonix.org/t/todo-research-and-document-how-to-use-tor-browser-for-security-not-anonymity-how-to-use-tbb-using-clearnet/3822/54)</sup> Unlike other methods that require users to manually disable Tor, this greatly simplifies configuration and lessons the chances that a configuration error will be made.
 
 ## Install tb-updater
 
@@ -87,17 +87,35 @@ In the Debian TemplateVM, run.
 
     update-torbrowser
 
-## Starting SecBrowser
+## Configure SecBrowser
 
-Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To disable Tor users need only run Tor Browser with the `--clearnet` switch.
+Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To configure SecBrowser to start when `torbrowser` is run, users can choose to create either of the following configuration files in `/rw/config`
 
-**Note:** Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
+**Note:** The configuration option `tb_clearnet=true` disables Tor in all SecBrowser and Tor Browser instances run in the AppVM. Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
 
-To start SecBrowser, in dom0 terminal, run.
+(Option 1) In the AppVM terminal, open a newly created `torbrowser.d` folder in a text editor with root rights.
 
-    qvm-run <appvm_name> "torbrowser --clearnet"
+    sudo mkdir -p /rw/config/torbrowser.d
+    
+Next, add the following text.
 
-SecBrowser will have a red background with a message stating _"Something Went Wrong!" Tor is not working in this browser._ Which is what you want when using the `--clearnet` switch. 
+    tb_clearnet=true
+
+(Option 2) In the AppVM terminal, open a newly created `50_user.conf` folder in a text editor with root rights.
+
+    sudo mkdir -p /rw/config/torbrowser.d/50_user.conf
+    
+ Next, add the following text.
+
+    tb_clearnet=true   
+
+## Start SecBrowser
+
+To start SecBrowser, in a dom0 terminal, run.
+
+    qvm-run <appvm_name> torbrowser
+
+SecBrowser will have a red background with a message stating _"Something Went Wrong!" Tor is not working in this browser._ Which is what you want when using the `tb_clearnet=true` option. 
 
 ## Normalizing SecBrowser behaviour (Security vs. Usability trade-off)
 
@@ -107,9 +125,9 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
    
 **Security Slider**: SecBrowser has a “Security Slider” in the shield menu that allows you to [increase security](https://tb-manual.torproject.org/security-settings/) by disabling certain web features that can be used to attack your security. By default, the Security Slider is set to "Standard" which is the lowest security level. Increasing SecBrowser's security level will prevent some web pages from functioning properly, so you should weigh your security needs against the degree of usability you require.
 
-**Private Browsing Mode**: In the default configuration SecBrowser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across SecBrowser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `--clearnet` switch is used. 
+**Private Browsing Mode**: In the default configuration SecBrowser has private browsing mode enabled. This setting prevents browsing and download history as well as cookies from remaining persistent across SecBrowser restarts. However, `tb-updater` includes a custom `user_pref` that disables private browsing mode when the `tb_clearnet=true` option is used. 
 
-  When private browsing mode is disabled SecBrowser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
+When private browsing mode is disabled SecBrowser's built-in "long-term linkability" protections are deactivated. The user loses protection which aims to prevent for example, "activities from an earlier browser session from being linkable to a later session". If security is paramount users can enable private browsing mode by commenting out the corresponding user preference.
    
    In the AppVM, open the `user.js` configuration file in an editor.
    
@@ -124,7 +142,7 @@ Note: If users edit the TemplateVM to modify SecBrowser behavior, all AppVMs cre
   //user_pref("browser.privatebrowsing.autostart", false);
   ```
    
- If you prefer to keep private browsing mode disabled, it may be advantageous to install one or more anti-tracking browser extensions. The extensions [Disconnect](https://addons.mozilla.org/en-US/firefox/addon/disconnect/), [Privacy Badger](https://www.eff.org/privacybadger/faq#How-is-Privacy-Badger-different-from-Disconnect,-Adblock-Plus,-Ghostery,-and-other-blocking-extensions) and [uBlock Origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) are all open-source and are generally recommended. Research which one(s) may be most suitable in the circumstances; their use cases are different.
+If you prefer to keep private browsing mode disabled, it may be advantageous to install one or more anti-tracking browser extensions. The extensions [Disconnect](https://addons.mozilla.org/en-US/firefox/addon/disconnect/), [Privacy Badger](https://www.eff.org/privacybadger/faq#How-is-Privacy-Badger-different-from-Disconnect,-Adblock-Plus,-Ghostery,-and-other-blocking-extensions) and [uBlock Origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/) are all open-source and are generally recommended. Research which one(s) may be most suitable in the circumstances; their use cases are different.
 
 **Persistent NoScript Settings**: `tb-updater` includes a `user_pref` that allows custom NoScript settings to persist across browser sessions. This is also a security vs usability trade-off.<sup>[[17]](https://www.whonix.org/wiki/Tor_Browser#NoScript_Custom_Setting_Persistence)</sup> Keep in mind that all NoScript preference will be overridden and all custom per-site settings lost, if the SecBrowser "Security Slider" setting is changed afterwards. This holds true regardless if the security setting was increased or decreased.
 
@@ -165,14 +183,14 @@ Package `tb-upater` was developed with design goals focused on securely download
 
 **What is Clearnet?**
 
-This term has two meaning<sup>[[15]](https://www.whonix.org/wiki/FAQ)</sup>
+This term has two meaning.<sup>[[15]](https://www.whonix.org/wiki/FAQ)</sup>
 
 * Connecting to the regular Internet without the use of Tor or other anonymity networks; and/or
 * Connecting to regular servers which are not onion services, irrespective of whether Tor is used or not.
 
-**How does the `--clearnet` switch disable Tor?**
+**How does the `tb_clearnet=true` option disable Tor?**
 
-Tor Browser supports custom user preferences `"user_pref"` which can be used to change browser configuration and behavior. In `tb-updater` the user preferences that disable Tor are located in /usr/share/tb-updater/tb_without_tor_settings.js. When the `--clearnet` switch is appended to /usr/bin/torbrowser, this file is copied over to the corresponding Tor Browser profile were the custom `user_pref(s)` are parsed.<sup>[[16]](https://github.com/Whonix/tb-starter/blob/28102df140f3f0f8a9b1bd5bc7dc19336420ccce/usr/bin/torbrowser#L354-L365)</sup> 
+Tor Browser supports custom user preferences `"user_pref"` which can be used to change browser configuration and behavior. In `tb-updater` the user preferences that disable Tor are located in /usr/share/tb-updater/tb_without_tor_settings.js. When the `tb_clearnet=true` option is added to /rw/config/torbrowser.d/, this file is copied over to the corresponding Tor Browser profile were the custom `user_pref(s)` are parsed.<sup>[[16]](https://github.com/Whonix/tb-starter/blob/28102df140f3f0f8a9b1bd5bc7dc19336420ccce/usr/bin/torbrowser#L354-L365)</sup> 
 
 Tor is disabled by setting these three preferences to false.
 ```
@@ -180,15 +198,15 @@ user_pref("extensions.torbutton.startup", false);
 user_pref("extensions.torlauncher.start_tor", false);
 user_pref("network.proxy.socks_remote_dns", false);
 ```
-**Can I use the `--clearnet` switch in a Whonix-Workstation VM (`anon-whonix`)?**
+**Can I use the `tb_clearnet=true` option in a Whonix-Workstation VM (`anon-whonix`)?**
 
-VMs behind a `sys-whonix` are always routed through Tor, traffic would still be torified. However, this is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation.
+VMs behind a `sys-whonix` are always routed through Tor, traffic would still be torified. However, this is strongly recommended against because using the `tb_clearnet` option will break Tor Browser's per tab stream isolation.
 
-**Can I use the `--clearnet` switch in a VM torified by something other than Whonix to avoid Tor over Tor?**
+**Can I use the `tb_clearnet=true` option in a VM torified by something other than Whonix to avoid Tor over Tor?**
 
-This is strongly recommended against because using the `--clearnet` switch will break Tor Browser's per tab stream isolation. A [complete implementation](https://www.whonix.org/wiki/Dev/anon-ws-disable-stacked-tor) compatible with Tor Browser's per tab stream isolation would be much better.
+This is strongly recommended against because using the `tb_clearnet=true` option will break Tor Browser's per tab stream isolation. A [complete implementation](https://www.whonix.org/wiki/Dev/anon-ws-disable-stacked-tor) compatible with Tor Browser's per tab stream isolation would be much better.
 
-**Does the `--clearnet` switch alter any other SecBrowser behavior?**
+**Does the `tb_clearnet=true` option alter any other SecBrowser behavior?**
 
 No, the only changes to SecBrowser are to the preferences previously shown. 
 
