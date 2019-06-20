@@ -212,6 +212,6 @@ No, the only changes to SecBrowser are to the preferences previously shown.
 
 Yes, but this could degrade security and privacy. see: Normalizing SecBrowser behavior.
 
-**I have an idea to improve SecBrowser's security in Qubes. Can is submit patch?**
+**I have an idea to improve SecBrowser's security in Qubes. Can I submit patch?**
 
 _Most definitely!_ Patches are always welcome!
