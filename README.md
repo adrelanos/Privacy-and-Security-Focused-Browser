@@ -89,11 +89,11 @@ In the Debian TemplateVM, run.
 
 ## Configure SecBrowser
 
-Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To configure SecBrowser to start when `torbrowser` is run, users can create a new configuration file in `/rw` containing the `tb_clearnet=true` value.
+Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To configure SecBrowser to start when `torbrowser` is run, users can create a new configuration file in folder `/rw/config/torbrowser.d` containing the `tb_clearnet=true` value.
 
 **Note:** The configuration option `tb_clearnet=true` disables Tor in all SecBrowser and Tor Browser instances run in the AppVM. Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
 
-1. In the AppVM terminal, created a new `torbrowser.d` folder in `/rw`.
+1. In the AppVM terminal, create a new folder `/rw/config/torbrowser.d`.
     
        sudo mkdir -p /rw/config/torbrowser.d
     
@@ -188,7 +188,7 @@ This term has two meaning.<sup>[[12]](https://www.whonix.org/wiki/FAQ)</sup>
 
 **How does the `tb_clearnet=true` option disable Tor?**
 
-Tor Browser supports custom user preferences `"user_pref"` which can be used to change browser configuration and behavior. In `tb-updater` the user preferences that disable Tor are located in /usr/share/tb-updater/tb_without_tor_settings.js. When the `tb_clearnet=true` option is added to /rw/config/torbrowser.d/, this file is copied over to the corresponding Tor Browser profile were the custom `user_pref(s)` are parsed.<sup>[[13]](https://github.com/Whonix/tb-starter/blob/28102df140f3f0f8a9b1bd5bc7dc19336420ccce/usr/bin/torbrowser#L354-L365)</sup> 
+Tor Browser supports custom user preferences `"user_pref"` which can be used to change browser configuration and behavior. In `tb-updater` the user preferences that disable Tor are located in `/usr/share/tb-updater/tb_without_tor_settings.js`. When the `tb_clearnet=true` config snippett option is dropped into the `/rw/config/torbrowser.d` folder, this file is copied over to the corresponding Tor Browser profile were the custom `user_pref(s)` are parsed.<sup>[[13]](https://github.com/Whonix/tb-starter/blob/28102df140f3f0f8a9b1bd5bc7dc19336420ccce/usr/bin/torbrowser#L354-L365)</sup> 
 
 Tor is disabled by setting these three preferences to false.
 ```
