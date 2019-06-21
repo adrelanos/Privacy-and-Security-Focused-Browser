@@ -91,7 +91,7 @@ In the Debian TemplateVM, run.
 
 Any newly created AppVM based on the above TemplateVM will inherit the Tor Browser package that was downloaded. To configure SecBrowser to start when `torbrowser` is run, users can create a new configuration file in `/rw` containing the `tb_clearnet=true` value.
 
-**Note:** The configuration option `tb_clearnet=true` disables Tor in all SecBrowser and Tor Browser instances run in the AppVM. Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
+**Note:** The configuration option `tb_clearnet=true` disables Tor in all SecBrowser and Tor Browser instances run in the AppVM that are started using `torbrowser`. Disabling Tor means traffic will not be routed through the Tor network. Similar to other browsers, your IP address will be visible to the recipients of any communications. This configuration is not anonymous.
 
 1. In the AppVM terminal, created a new `torbrowser.d` folder in `/rw`.
     
