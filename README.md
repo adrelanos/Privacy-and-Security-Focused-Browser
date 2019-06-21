@@ -198,7 +198,7 @@ user_pref("network.proxy.socks_remote_dns", false);
 ```
 **Can I use the `tb_clearnet=true` option in a Whonix-Workstation VM (`anon-whonix`)?**
 
-VMs behind a `sys-whonix` are always routed through Tor, traffic would still be torified. However, this is strongly recommended against because using the `tb_clearnet` option will break Tor Browser's per tab stream isolation.
+VMs behind a `sys-whonix` are always routed through Tor, traffic would still be torified. However, this is strongly recommended against because using the `tb_clearnet=true` option will break Tor Browser's per tab stream isolation.
 
 **Can I use the `tb_clearnet=true` option in a VM torified by something other than Whonix to avoid Tor over Tor?**
 
